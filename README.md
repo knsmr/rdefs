@@ -4,6 +4,13 @@ Rdefs is a tiny Ruby script that extracts class, module, method, attribute defin
 
 Rdefs was originally written by Aoki Minero, and later gemified by Ken Nishimura.
 
+## Install
+
+	   $ git clone https://github.com/knsmr/rdefs.git
+	   $ cd rdefs
+	   $ gem build rdefs.gemspec
+	   $ gem install rdefs-0.0.1.gem
+
 ## Example
 
 	$ rdefs active_record/session_store.rb
