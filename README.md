@@ -61,3 +61,21 @@ Rdefs was originally written by Aoki Minero, and later gemified by Ken Nishimura
 	        --class                      Show only classes and modules
 	    -n, --lineno                     Prints line number.
 	        --help                       Prints this message and quit.
+
+# Use Rdefs with Emacs
+
+Add something like this to your .emacs or whatever:
+
+	;;; extract-ruby-defs with rdefs
+	(defun ruby-defs ()
+	  (interactive)
+	  (let ((obuf (current-buffer)))
+	    (setq buf (get-buffer-create "*rdefs*"))
+	    (set-buffer buf)
+	    (erase-buffer)
+	    (set-buffer obuf)
+	    (call-process-region
+	     (point-min)
+	     (point-max) "/path/to/bin/rdefs" nil buf)
+	    (switch-to-buffer-other-window buf)
+	    (ruby-mode)))
