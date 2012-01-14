@@ -1,36 +1,38 @@
 #!/usr/bin/env ruby
+# Usage: rdefs [file...]
 #
-# $Id$
 
 require 'optparse'
 
-CLASS_RE = /\A\s*(?:
+module Rdefs
+  CLASS_REGEX = /\A\s*(?:
     class\s | module\s | include[\s\(]
-  )/x
-
-DEF_RE = /\A\s*
-  (?: def\s
-    | class\s
-    | module\s
-    | include\b
-    | alias(?:_\w+)?\b
-    | attr_reader\b
-    | attr_writer\b
-    | attr_accessor\b
-    | attr\b
-    | public\b
-    | private\b
-    | protected\b
-    | module_function\b
     )/x
 
+  DEF_REGEX = /\A\s*
+    (?: def\s
+      | class\s
+      | module\s
+      | include\b
+      | alias(?:_\w+)?\b
+      | attr_reader\b
+      | attr_writer\b
+      | attr_accessor\b
+      | attr\b
+      | public\b
+      | private\b
+      | protected\b
+      | module_function\b
+      )/x
+end
+
 def main
-  re = DEF_RE
+  re = Rdefs::DEF_REGEX
   print_line_number_p = false
   parser = OptionParser.new
   parser.banner = "#{File.basename($0)} [-n] [file...]"
   parser.on('--class', 'Show only classes and modules') {
-    re = CLASS_RE
+    re = Rdefs::CLASS_REGEX
   }
   parser.on('-n', '--lineno', 'Prints line number.') {
     print_line_number_p = true
@@ -76,9 +78,9 @@ class Preprocessor
 
   def gets
     line = @f.gets
-    if /\A=begin\s/ =~ line
+    if /^=begin\s/ =~ line
       while line = @f.gets
-        break if /\A=end\s/ =~ line
+        break if /^=end\s/ =~ line
       end
       line = @f.gets
     end
