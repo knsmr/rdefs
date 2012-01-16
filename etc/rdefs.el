@@ -1,5 +1,11 @@
+;; some code to use rdefs from emacs
+
 (defconst rdefs-buffer-name "*rdefs*")
 (defconst rdefs-command "rdefs")
+(setq rdefs-mode-keymap (make-sparse-keymap))
+(define-key rdefs-mode-keymap "q" '(lambda ()
+				     (interactive)
+				     (kill-buffer rdefs-buffer-name)))
 (define-minor-mode rdefs-mode
   "Toggle Rdefs mode"
   ;; The initial value.
@@ -9,19 +15,15 @@
   ;; The minor mode bindings.
   :keymap rdefs-mode-keymap
   :group 'rdefs)
-(setq rdefs-mode-keymap (make-sparse-keymap))
-(define-key rdefs-mode-keymap "q" '(lambda ()
-				     (interactive)
-				     (kill-buffer rdefs-buffer-name)))
 
 ;;; extract-ruby-defs with rdefs
 (defun ruby-defs ()
   (interactive)
-  (let ((obuf (current-buffer)))
+  (let ((oldbuf (current-buffer)))
     (setq buf (get-buffer-create rdefs-buffer-name))
     (set-buffer buf)
     (erase-buffer)
-    (set-buffer obuf)
+    (set-buffer oldbuf)
     (call-process-region
      (point-min)
      (point-max) rdefs-command nil buf)
