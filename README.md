@@ -2,14 +2,11 @@
 
 Rdefs is a tiny Ruby script that extracts class, module, method, attribute definitions from a given Ruby source code. It helps you to take a quick look at the structure of the source code. Rdefs is different from document generation tools like RDoc, SDoc, YARD because those tools are meant to extract APIs and the description for each API.
 
-Rdefs was originally written by Aoki Minero, and later gemified by Ken Nishimura.
+Rdefs was originally written by Aoki Minero many years ago, and later gemified by Ken Nishimura.
 
 ## Install
 
-	   $ git clone https://github.com/knsmr/rdefs.git
-	   $ cd rdefs
-	   $ gem build rdefs.gemspec
-	   $ gem install rdefs-0.0.1.gem
+	   $ gem install rdefs
 
 ## Example
 
@@ -71,18 +68,8 @@ Rdefs was originally written by Aoki Minero, and later gemified by Ken Nishimura
 
 # Use Rdefs with Emacs
 
-Add something like this to your .emacs or whatever:
+You might want to put etc/rdefs.el into your elisp directory and add something like this to your dot.emacs:
 
-	;;; extract-ruby-defs with rdefs
-	(defun ruby-defs ()
-	  (interactive)
-	  (let ((obuf (current-buffer)))
-	    (setq buf (get-buffer-create "*rdefs*"))
-	    (set-buffer buf)
-	    (erase-buffer)
-	    (set-buffer obuf)
-	    (call-process-region
-	     (point-min)
-	     (point-max) "/path/to/bin/rdefs" nil buf)
-	    (switch-to-buffer-other-window buf)
-	    (ruby-mode)))
+	(require 'rvm)
+	(rvm-use-default)
+	(require 'rdefs)
